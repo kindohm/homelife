@@ -1,0 +1,25 @@
+
+do
+  let pat = "{0@6 0@6 0@6 0@13 1 0@8 1@6 1@15 0 0 0@14}%16"
+      mod p = every 2 rev $ p
+  p "end"
+    $ limit
+    $ stack [
+      -- main
+      g $ (|+ note "-24") $ slow 2 $ note (scale "minor" "{0 -2 2 3}%1") 
+        # midichan 0 # legato 0.75 # gain (range 0.8 1 $ slow 33 rand)
+      -- kick
+      , g $ slow 8 $ (0.5 ~>) $ pad3
+      -- synth sweep
+      , slow 4 $ pad5
+      -- nerd
+      , g $ slow 5 $ pad9
+      -- swish - or mash it
+      , slow 6 $ (0.5 ~>) $ pad6
+      -- alt drum pat
+      , g $ dg7 $ mod $ rytmmap [2,3] pat # note "c3"
+    ] # rytm # cps (140/120/2)
+
+d1 silence
+
+  hush

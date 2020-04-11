@@ -1,0 +1,47 @@
+
+d1 silence
+
+-- STOP!!!
+-- TURN UP RYTM REVERB SEND
+-- TURN DOWN RYTM HPF
+-- FADE IN MAIN PAD AND VOX
+
+d1 silence
+
+do 
+  let pat = "{0@6 0@6 1@12 1 0@8 0 1@9}%16" 
+      mod p = every 2 rev $ p
+  p "real99"
+    $ limit
+    $ stack [
+      -- main
+      g $ slow "<1 2 3>" $ (|+ note "<0 0 12 0>") $ pad6
+      -- vox (both of them)
+      , g $ stack [pad9, slow 1.1 $ pad5]
+      -- pad2
+      , slow 8 $ pad1
+      -- drums
+      , g $ one 0.2 $ dg0 $ mod $ rytmmap [2,3] pat # note "c3"
+      -- snare length
+      , fast 3 $ perf4flip
+      -- cy
+      , g $ slow 16 $ pad11
+      -- perc
+      , g $ sb 0.15 (# pad8) 
+        $ shift 
+        $ (|* gain (range 0.8 1 $ slow 33 rand)) 
+        $ struct (binaryN 16 "<2839423 26347 2938429 8349835>") $ pad7
+      -- SCENE!
+      , dg0 $ fast 16 $ gain 1 # scene (shiftBy 9 $ choose [0,1])
+      , randcat [normDelay]
+      -- cy delay level
+      , fast 3 $ perf7rand
+      -- snare delay level
+      , fast 5 $ perf8rand
+    ] # rytm # cps (140/120/2)
+
+p "real99" silence
+
+d1 $ legal
+
+    hush

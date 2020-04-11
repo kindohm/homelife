@@ -1,0 +1,31 @@
+
+do 
+  let bdpat = "{0.9 0.5 0.5 0.4 0.6 0.8 0.5 0.3 0.4 0.4 0.4}%16"
+  p "sawish" 
+    $ limit
+    $ stack [
+      -- main bass
+      -- LFO = balance. manually tweak filter cutoff
+      g $ (|+ note "-24") $ note (scale "minPent" "{2@3 0@3 1@3 -1@3 0@3 -2@3 -6@3 ~ ~ ~ ~ ~ ~ ~}%8") # midichan 0 # legato 0.3
+      -- chords
+      , g $ (|+ note "-24") 
+        $ note (scale "minPent" "{[5 4] ~ ~ ~}%4") # midichan 1 # legato 0.3
+      -- kick
+      , g $ degradeBy ((1-) $ bdpat) $ gain (range 0.5 1 $ bdpat) # pad3
+      -- rs
+      , g $ roll 0.2 $ rollSlow 0.5 $ struct "~ 1" $ pad4
+      , fast 16 $ perf3flip
+      -- sizzle
+      , slow 16 $ pad5
+      -- hat
+      , g $ dg5 $ fast 16 $ pad11
+    ] # rytm # cps (140/120/2)
+
+
+p "sawish" silence
+
+d1 silence
+
+d1 $ cortini
+
+    hush

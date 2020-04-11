@@ -1,0 +1,116 @@
+
+let 
+    perlinSpeed = 16
+    distanceBetweenOthers = 2347
+    modPerlin2 x y min max = (((distanceBetweenOthers*) y) ~>) 
+                              $ gain "1*8" 
+                              # ccn x 
+                              # ccv (range min max $ slow perlinSpeed $ perlin)
+    filter1 = 1
+    filter1width = 2
+    filter1env = 3
+    filter2 = 4
+    filter2width = 5
+    filter2env = 6
+    unisonDetune = 7
+    prism = 8
+    detune = 10
+    detuneDiv = 11
+    pitchEnv = 12
+    phaser = 13
+    phwidth = 14
+    phoff = 15
+    phspeed = 16
+    filter1lfospeed = 17
+    filter1lfotension = 18
+    filter1lfoskew = 19
+    filter1lfopw = 20
+    filter2lfospeed = 21
+    filter2lfotension = 22
+    filter2lfoskew = 23
+    filter2lfopw = 24
+    timbre = 25
+    pitchlfospeed = 26
+    pitchlfotension = 27
+    pitchlfoskew = 28
+    pitchlfopw = 29
+    filter1mod = modPerlin2 filter1 filter1 0 127
+    filter1widthmod = modPerlin2 filter1width filter1width 50 100
+    filter1envmod = modPerlin2 filter1env filter1env 0 127
+    filter2mod = modPerlin2 filter2 filter2 0 127
+    filter2widthmod = modPerlin2 filter2width filter2width 50 100
+    filter2envmod = modPerlin2 filter2env filter2env 0 127
+    unisondetunemod = modPerlin2 unisonDetune unisonDetune 0 127
+    prismmod = modPerlin2 prism prism 0 127
+    detunemod = modPerlin2 detune detune 0 64
+    detunedivmod = modPerlin2 detuneDiv detuneDiv 0 64
+    pitchenvmod = modPerlin2 pitchEnv pitchEnv 0 127
+    phasermod = modPerlin2 phaser phaser 0 127
+    phwidthmod = modPerlin2 phwidth phwidth 0 32
+    phoffmod = modPerlin2 phoff phoff 0 127
+    phspeedmod = modPerlin2 phspeed phspeed 0 127
+    filter1lfospeedmod = modPerlin2 filter1lfospeed filter1lfospeed 0 64
+    filter1lfotensionmod = modPerlin2 filter1lfotension filter1lfotension 0 127
+    filter1lfoskewmod = modPerlin2 filter1lfoskew filter1lfoskew 0 127
+    filter1lfopwmod = modPerlin2 filter1lfopw filter1lfopw 0 127
+    filter2lfospeedmod = modPerlin2 filter2lfospeed filter2lfospeed 0 64
+    filter2lfotensionmod = modPerlin2 filter2lfotension filter2lfotension 0 127
+    filter2lfoskewmod = modPerlin2 filter2lfoskew filter2lfoskew 0 127
+    filter2lfopwmod = modPerlin2 filter2lfopw filter2lfopw 0 127
+    timbremod = modPerlin2 timbre timbre 0 127
+    pitchlfospeedmod = modPerlin2 pitchlfospeed pitchlfospeed 0 127
+    pitchlfotensionmod = modPerlin2 pitchlfotension pitchlfotension 0 127
+    pitchlfoskewmod = modPerlin2 pitchlfoskew pitchlfoskew 0 127
+    pitchlfopwmod = modPerlin2 pitchlfopw pitchlfopw 0 127
+    g p = (const $ s "~") $ p
+    hardmax p = (# ccv 127) $ p 
+    hardmin p = (# ccv 0) $ p
+    pitchoff p = hardmin $ ccn pitchlfospeed # ccn 0
+
+hush
+
+do
+  d1
+    $ (|* gain 1.1)
+    $ whenmod 75 50 (110000 ~>)
+    $ whenmod 50 25 (100000 ~>)
+    $ (1178001110 ~>)
+    $ stack [
+          slow (slow 8 "<2 4 8 16>")
+          $ superimpose (|+ note 9)
+          $ superimpose (|+ note 5)
+          $ note "{0@3 3@2}%16"  # octave "[4 5 3]/24"
+        # legato 1
+      , stack [
+        filter1mod
+        , filter1widthmod
+        , filter1envmod 
+        , filter2mod
+        , filter2widthmod
+        , filter2envmod 
+        , unisondetunemod 
+        , prismmod
+        , detunemod
+        , detunedivmod 
+        , pitchenvmod 
+        , phasermod 
+        , phwidthmod 
+        , phoffmod 
+        , phspeedmod
+        , filter1lfospeedmod
+        , filter1lfotensionmod 
+        , filter1lfoskewmod 
+        , filter1lfopwmod
+        , filter2lfospeedmod
+        , filter2lfotensionmod 
+        , filter2lfoskewmod 
+        , filter2lfopwmod
+        , timbremod
+        , pitchlfospeedmod 
+        , pitchlfotensionmod 
+        , pitchlfoskewmod 
+        , pitchlfopwmod
+      ]
+    ] # s "harmor" # cps (180/120/2)
+
+  hush

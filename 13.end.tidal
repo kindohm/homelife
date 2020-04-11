@@ -1,0 +1,14 @@
+
+
+d1
+  $ limit
+  $ stack [
+    (|+ note "-24") $ slow 2 $ note (scale "minor" "{0 -2 2 3}%1") 
+      # midichan 0 # legato 0.75 # gain (range 0.8 1 $ slow 33 rand)
+    , slow 8 $ (0.5 ~>) $ pad3
+    , slow 4 $ pad5
+    , slow 5 $ pad9
+    , slow 6 $ (0.5 ~>) $ pad6
+  ] # rytm # cps (140/120/2)
+
+  hush

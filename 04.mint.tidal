@@ -1,0 +1,42 @@
+let main = every 3 (rev) 
+            $ fast 2 
+            $ every 2 (|+ note "12") 
+            $ (|+ note "-8") 
+            $ (|+ note "-36")
+            $ note "0 4 7 11 12 16 19 23"
+
+d1 
+  $ limit
+  $ stack [
+    -- main synth
+    main
+    -- kick
+    , one' 0.2 $ shift $ roll' 0.1 $ shift $ rep' 10 $ slow 5 $ pad3
+    -- snare
+    , (0.5 ~>) $ pad2
+    -- kick lenght
+    , perf3 127
+    -- chords
+    , fast 2 $ pan "1(3,8)" # midinote "[4,5,6]" # gain 1
+    -- hat
+    , midinote "{8*4 8*2 [9 ~ ~ 9] 8 ~ ~ ~}%4"
+    -- cy
+    , shift $ shift $ slow 10 $ midinote 10
+    -- chords mod
+    , fast 16 $ pan "1" # perf5 (range 0 127 $ slow 250 tri) 
+    -- main mod
+    , every 2 rev $ foldEvery [3,4..6] (1.25 ~>) $ perf1 (range 0 0 $ slow 20 tri)
+    , fast 1.6 $ randcat [normDelay]
+    , gain 1 # scene (shiftBy 67 $ choose [0,1])
+  ] # rytm # cps (170/120/2)
+
+
+
+hush
+
+d1 $  # rytm
+
+
+d1 $ rytm # midichan 2 # note "c3"
+
+  hush

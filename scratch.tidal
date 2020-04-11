@@ -1,0 +1,49 @@
+
+
+
+d1 $ s "bd*8"
+
+hush 
+
+do 
+  let pat = "{0.8 0.3 ~ 0.2 0.3 0.3 ~ 0.2 0.2}%16"
+      spat = "{0.8@5 0.6@7 0.5@9 0.6@3 0.7@6 0.3 0.3 0.3 0.3}%16"
+  d1 
+    $ every 2 rev
+    $ stack [
+        degradeBy ((1-) pat) $ gain (range 0.6 1.15 $ pat) # s "bd"
+        , (1 ~>) $ degradeBy ((1-) spat) $ gain (range 0.5 1.15 $ spat) # s "sn:1" ]
+
+  hush
+
+  d1 $ cortini
+
+  d1 
+    $ superimpose ((# cut 2) . (|* speed 1.1) . (# pan (shiftBy 8293 $ rand)))
+    $ dg4 
+    $ s "legal(<3 5>,16,<0 6 3>)" 
+    # begin (range 0 0.75 $ shrand 100) 
+    # hpf 600 
+    # lpf 5000 
+    # cut 1
+    # n (shiftBy 33 $ irand 3)
+    # pan (shiftBy 83 $ rand)
+
+    hush
+
+
+
+do 
+  let pat = "{0 0@2 1@7 0@13}%16"
+  d1
+    $ limit
+    $ slow (slow 4 $ "< 1>")
+    $ stack [
+      every 2 rev $ notemap ["-6","~"] pat # harmor
+      , every 2 rev $ rytmmap [2,3] pat # note "c3" # rytm
+      , sb 0.1 (# pad12) 
+        $ fast (slow 4 $ "<1>") $ struct (binaryN 16 "<8239 892323 3289232 1 3782>") $ pad11
+      , roll 0.25 $ (0.5 ~>) $ pad2
+    ] # cps (160/120/2)
+
+    hush

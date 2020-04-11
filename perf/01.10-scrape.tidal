@@ -1,0 +1,32 @@
+
+
+do 
+  let snareFillFreq = 5
+      ghostFreq = 1
+  p "scrape"
+    $ limit
+    $ stack [
+      -- pad1
+      g $ slow 2.5 $ pad6
+      -- pad2
+      , g $ slow 4.5 $ pad5
+      -- kick
+      , g $ iter 16 $ every snareFillFreq (within (0.375,1) (const $ "~ [~ 3] ~ ~" # midichan 1 # rytm # note "c3")) 
+        $ every ghostFreq (ghost (# pad11)) $ dg0 $ struct "1(3,8,3)" $ pad3
+      -- tom
+      , g $ every 3 rev $ iter 16 $ ((0.0625*3) ~>) $ (# note ( "{c2 c3}%4")) $ struct "1(3,8,3)" $ pad7
+      -- clap
+      , g $ iter 16 $ (0.5 ~>) $ pad4
+      , fast 1.5 $ perf3flip
+    ] # rytm # cps (140/120/2)
+
+    p "scrape" silence
+
+d1 $ trip
+
+d1 silence
+
+hush
+
+let mi = dg7 $ s "mi(3,16)" # n (irand 10) # lpf 500 # hpf 100 # cut 55
+

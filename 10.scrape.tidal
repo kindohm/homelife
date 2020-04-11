@@ -1,0 +1,16 @@
+
+
+
+p "stuff"
+  $ limit
+  $ stack [
+    slow 2.5 $ pad6
+    , pad5
+    , every 5 (within (0.375,1) (const $ "~ [~ 3] ~ ~" # midichan 1 # rytm # note "c3")) 
+      $ ghost (# pad11) $ struct "1(3,8,3)" $ pad3
+      , ((0.0625*3) ~>) $ (# note ( "{c2 c3}%4")) $ struct "1(3,8,3)" $ pad7
+      , (0.5 ~>) $ pad4
+      , fast 1.5 $ perf3flip
+  ] # rytm # cps (150/120/2)
+
+  hush
